@@ -1,5 +1,13 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
+const corsOptions = {
+  origin: "*",
+  credentials: true,
+  optionSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
@@ -218,12 +226,10 @@ app.delete("/books/:bookId", async (req, res) => {
   try {
     const deletedBook = await deleteBook(req.params.bookId);
     if (deletedBook) {
-      res
-        .status(200)
-        .json({
-          message: "Book deleted successfully",
-          deletedBook: deletedBook,
-        });
+      res.status(200).json({
+        message: "Book deleted successfully",
+        deletedBook: deletedBook,
+      });
     } else {
       res.status(404).json({ error: "Book not found" });
     }
